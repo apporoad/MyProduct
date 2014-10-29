@@ -1,0 +1,55 @@
+﻿<html>
+<head>
+</head>
+
+<body>
+<div>
+<input id="mainText" type="text" />
+<input id="mainBtn" type="button" value="主按钮" onclick="onBtnClick()"/>
+
+</div>
+<div>
+<iframe id="iframe1" style="width: 600px; height: 200px" src="Attachments/demo001.html"></iframe>
+</div>
+<iframe id="iframe2" style="width: 600px; height: 200px" src="Attachments/demo002.html"></iframe>
+<iframe id="iframe3" style="width: 600px; height: 200px" src="Attachments/demo003.html"></iframe>
+</body>
+
+
+<script type="text/javascript">
+
+function onBtnClick()
+{
+	//alert("主按钮click");
+	//frame2.src="Attachments/demo003.html";
+	frame1.contentWindow.onBtnClick();
+}
+
+var frame1=window.document.getElementById("iframe1"); 
+var frame2=window.document.getElementById("iframe2"); 
+var frame3=window.document.getElementById("iframe3"); 
+
+//绑定事件
+frame1.contentWindow.onbeforeunload = function () 
+{
+	
+	alert("d1");
+	
+};
+
+frame2.contentWindow.onbeforeunload = function () 
+{
+	frame2.contentWindow.event.returnValue = "d2";
+};
+
+frame3.contentWindow.onbeforeunload = function () 
+{
+	
+	frame3.contentWindow.event.returnValue = "d3";
+};
+
+
+
+
+</script>
+</html>

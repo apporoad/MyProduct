@@ -1,0 +1,102 @@
+﻿<html>
+<head>
+</head>
+
+<body>
+
+<input id="ts" value="asdf" />
+
+</body>
+
+<script src="jquery-1.8.2.js" type="text/javascript"></script>
+<script type="text/javascript" >
+
+(function ($) {   
+    var tagName = "Input, Select, Textarea";
+    var ctrlIds = [];
+    $.fn.MonitorDataChange = function (options) {
+        var deafult = {
+            arrTags: tagName,  
+            arrCtrls: ctrlIds  
+        };
+        var ops = $.extend(deafult, options);
+        tagName = ops.arrTags;
+        ctrlIds = ops.arrCtrls;
+        
+        $(ops.arrTags).one("focus", function () {
+            if ($.inArray($(this).attr("id"), ops.arrCtrls) != -1)
+            { return; }
+            $(this).data('initData', $(this).val());
+        });
+    };
+  
+    $.fn.isIgnorePageDataChange = false;
+   
+
+    $.fn.isPageDataChange = function () {
+        $(tagName).each(function () {
+            if ($.inArray($(this).attr("id"), ctrlIds) != -1)
+            { return; }
+          
+            if (typeof ($(this).data('initData')) != 'undefined') {
+                var oldValue = $(this).data('initData');
+                var newValue = $(this).val();
+                if (oldValue != newValue) {
+                    pageDataChange = true;
+                }
+               
+            }
+        });
+        return pageDataChange;
+    };
+
+})(jQuery);
+
+var Founder = Founder || {};
+Founder.Common = Founder.Common || {};
+Founder.NewSite = Founder.NewSite || {};
+Founder.PreConstruct = Founder.PreConstruct || {};
+Founder.Construct = Founder.Construct || {};
+Founder.ProjectComplete = Founder.ProjectComplete || {};
+
+/*全局变量区*/
+Founder.Var = Founder.Var || {};
+
+Founder.Var.Document = $(document);
+
+Founder.Common.SetIgnorePageDataChange = function () {
+    if (Founder.Var.Document.isIgnorePageDataChange != "undefined")
+    {
+        Founder.Var.Document.isIgnorePageDataChange = true;
+    }
+}
+
+
+
+
+
+
+
+if(Founder.Var.Document.MonitorDataChange!="undefined")
+{
+    Founder.Var.Document.MonitorDataChange(null);
+}
+if(Founder.Var.Document.isPageDataChange!="undefined")
+{
+    window.onbeforeunload = function () {
+        if (Founder.Var.Document.isIgnorePageDataChange==false)
+        {
+		
+                    if (Founder.Var.Document.isPageDataChange()) {
+            event.returnValue = "页面数据已被修改";
+        }
+        }
+
+    }
+}
+
+Founder.Common.SetIgnorePageDataChange();
+
+</script>
+
+</html>

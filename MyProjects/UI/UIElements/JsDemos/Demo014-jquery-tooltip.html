@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="js/jquery-tooltip.js"></script>
+    <link type="text/css" rel="stylesheet" href="css/jquery-tooltip.css" />
+</head>
+<body>
+
+<br>
+<br><br><br><br><br>
+<input id="txt1" type="text" title="你好吗" />
+<input type="text" id="txtTest" />
+</body>
+</html>
+
+        <script type="text/javascript">
+
+
+            $(document).ready(function(){
+                //所有的Input同意添加tooltip
+                //$("input").showTip();
+                $("#txtTest").showTip({flagInfo:"自定义提示信息水电费飞凤飞飞凤飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞飞凤飞飞"});
+
+                $("#txt1").showTip();
+                $("#txt1").showTip({isAnimate:true});
+
+            });
+        </script>

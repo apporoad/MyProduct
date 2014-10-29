@@ -1,0 +1,32 @@
+﻿<html>
+<head>
+</head>
+
+<body bgcolor="red">
+<input id="d1Text" type="text" />
+<input id="d1Btn" type="button" value="d1按钮" onclick="onBtnClick()"/>
+<input id="d2Btn" type="button" value="调用d2点击按钮" onclick="on2BtnClick()"/>
+<h1>测试11</h1>
+
+</body>
+
+<script type="text/javascript">
+
+function onBtnClick()
+{
+	var main=document.getElementById("d1Text");
+	alert("D1按钮click:"+main.value);
+}
+
+function on2BtnClick()
+{
+	//var frame2=window.parent.window.document.getElementById("iframe2"); 
+
+    //frame2.contentWindow.onBtnClick(); 
+
+}
+
+
+</script>
+
+</html>

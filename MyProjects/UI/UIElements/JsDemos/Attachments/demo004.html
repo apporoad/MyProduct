@@ -1,0 +1,29 @@
+﻿<html>
+<head>
+</head>
+
+<body bgcolor="red">
+<input id="d1Text" type="text" />
+<input id="d1Btn" type="button" value="给变量txt赋值" onclick="onBtnClick()"/>
+
+<h1>窗口一</h1>
+
+</body>
+
+<script type="text/javascript">
+
+var MyVar = MyVar || {};
+MyVar.txt;
+
+function onBtnClick()
+{
+	var main=document.getElementById("d1Text");
+	MyVar.txt=main.value;
+	alert("已经赋值："+MyVar.txt);
+}
+
+
+
+</script>
+
+</html>

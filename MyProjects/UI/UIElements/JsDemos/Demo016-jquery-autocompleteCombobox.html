@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="js/jquery-1.8.2.js"></script>
+    <script type="text/javascript" src="js/jquery.autocompleteCombobox.js"></script>
+
+    <link href="css/jquery.autocompleteCombobox.css" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<div>
+
+
+    <input type="text" id="txtTest" class="autocompleteCombobox" />
+
+</div>
+
+</body>
+</html>
+        <script type="text/javascript">
+            var input=$("#txtTest");
+            input.autoCompleteCombobox(["c++", "java", "php", "coldfusiondsfdsf", "中文","中文", "asp", "ruby", "测试", "c", "scala", "groovy", "haskell", "pearl"]
+            ,{
+                        //width: 300,
+                        //multiple: true,
+                        minChars: 0,
+                        max:16,
+                        selectFirst: false,
+                        autoFill: true,
+                        mustMatch: true,
+                        matchContains: true
+                        //scrollHeight: 220
+                    });
+
+
+        </script>

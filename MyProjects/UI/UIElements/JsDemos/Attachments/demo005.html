@@ -1,0 +1,61 @@
+﻿<html>
+<head>
+</head>
+
+<body bgcolor="yellow">
+
+<input id="d2Text" type="text" />
+<input id="d2Btn" type="button" value="显示窗口1中text的对应变量的值" onclick="onBtnClick()"/>
+
+<h2>窗口二</h2>
+
+<iframe id="iframe3" style="width: 600px; height: 200px" src="demo006.html"></iframe>
+
+</body>
+
+
+<script type="text/javascript">
+
+
+function onBtnClick()
+{
+	//先获取外部窗体对象
+	var doc=window.parent.window.document;
+	//获取txt值
+	var txt=doc.frames['iframe1'].MyVar.txt;
+	if(txt!=undefined)
+	{
+		alert("txt："+txt);
+	}
+}
+
+getDOMRootWindow = function (winObject)
+{
+    //如果有window对象
+    if (winObject) {
+        //判断，他有没有上一层
+        if (winObject != top) {
+            return getDOMRootWindow(winObject.parent);
+        }
+        else {
+            return winObject;
+        }
+    }
+    else {
+        if (self != top) {
+            return getDOMRootWindow(window.parent);
+        }
+        else {
+            return window;
+        }
+    }
+}
+
+//window.frames.length != parent.frames.length
+
+alert(getDOMRootWindow()["test"]);
+
+
+</script>
+
+</html>

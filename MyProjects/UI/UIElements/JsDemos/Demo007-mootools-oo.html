@@ -1,0 +1,97 @@
+﻿<html>
+<head>
+    <script type="text/javascript" src="js/mootools-core-1.5.1.js"></script>
+
+</head>
+
+<body>
+
+<div>
+
+
+</div>
+
+</body>
+<script type="text/javascript">
+
+
+    //类
+    var Animal = new Class({
+        initialize: function (name) {
+            this.name = name;
+        }
+    });
+
+    //实例化
+    var cat = new Animal("小喵喵");
+
+    //继承 extend
+    var Cat = Animal.extend({
+        initialize: function (name, age) {
+            this.parent(name);
+            this.age = age;
+        }
+    });
+
+    //扩展implement
+    Cat.implement({
+        initialize:function(name,age){
+            this.name=name;
+            this.age=age;
+        },
+        myAction:function(){
+            alert(this.name+"的年龄是"+this.age);
+        }
+    });
+
+    //var cat=new Cat("小咪咪",12);
+    //cat.myAction();
+
+    //对象合并 extend
+    var firstOb = {
+        'name': 'John',
+        'lastName': 'Doe'
+    };
+    var secondOb = {
+        'age': '20',
+        'sex': 'male',
+        'lastName': 'Dorian'
+    };
+
+    Object.extend(firstOb, secondOb);
+
+    //类型判断
+    //alert($type("adf"));
+    //alert($type(null));
+    /*
+    'element' - DOM
+    'textnode' - DOM 文本节点
+    'whitespace' - DOM 空白节点
+    'array' - 数组
+    'object' - 对象
+    'string' - 字符串
+    'number' - 数字
+    'boolean' - 布尔型
+    'function' - 函数
+    */
+
+    var array=[1,23,34,5,6];
+    var r=array.filter(function(e){
+       return e>10;
+    });
+//    alert(r);
+
+    r=array.every(function(e){
+               return e>10;
+            });
+//    alert(r);
+    r=array.some(function(e){
+       return e>10;
+    });
+//    alert(r);
+
+
+
+</script>
+
+</html>

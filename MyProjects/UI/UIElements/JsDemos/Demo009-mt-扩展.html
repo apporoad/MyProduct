@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script type="text/javascript" src="js/mootools-core-1.5.1.js"></script>
+</body>
+
+<script type="text/javascript">
+
+
+    //扩展implement
+    Object.implement({
+
+        isString:function(){
+            if($type(this)=="string")
+            {
+                return true;
+            }
+            return false;
+        }
+    });
+    var obj=document;
+    alert(obj.isString());
+
+
+
+
+</script>
+</html>

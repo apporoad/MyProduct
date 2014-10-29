@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<script type="text/javascript" src="jquery-1.8.2.js"></script>
+<body>
+
+<table>
+    <tr>
+        <td>只能数字输入</td><td><input type="text" id="txtI" /></td>
+    </tr>
+    <tr>
+         <td>特殊字符不能输入</td><td><input type="text" id="txtSpec" /></td>
+    </tr>
+</table>
+</body>
+</html>
+
+<script type="text/javascript">
+
+    var Founder = Founder || {};
+    Founder.UI = Founder.UI || {};
+
+    /**
+     * 限制文本输入值方法
+     */
+    Founder.UI.LimitTextInput = function (input, format) {
+        var privateMethod=function(){
+            if(!this.value.match(format) || this.value.length>10) {
+                this.value = this.t_value;
+            }
+            else
+            {
+                this.t_value = this.value;
+            }
+//                    if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/)) {
+//                        this.o_value = this.value;
+//                    }
+        };
+        $(input)[0].t_value="";
+//        $(input).keypress(privateMethod);
+//        $(input).keyup(privateMethod);
+//        $(input).blur(privateMethod);
+
+        $(input).bind('keypress',privateMethod);
+        $(input).bind('keyup',privateMethod);
+        $(input).bind('blur',privateMethod);
+
+    }
+
+
+    var text=document.getElementById("txtI");
+    Founder.UI.LimitTextInput(text,/^[\+\-]?\d*?\.?\d{0,4}?$/);
+
+
+    var txtSpec =document.getElementById("txtSpec");
+
+    Founder.UI.LimitTextInput(txtSpec,/^[0-9a-zA-Z\u4e00-\u9fa5]*$/);
+
+    //
+
+</script>

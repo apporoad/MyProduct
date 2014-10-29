@@ -1,0 +1,44 @@
+<html>
+<head>
+</head>
+
+<body bgcolor="yellow">
+
+
+
+</body>
+
+
+<script type="text/javascript">
+
+
+    getDOMRootWindow = function (winObject)
+    {
+        //如果有window对象
+        if (winObject) {
+            //判断，他有没有上一层
+            if (winObject != top) {
+                return getDOMRootWindow(winObject.parent);
+            }
+            else {
+                return winObject;
+            }
+        }
+        else {
+            if (self != top) {
+                return getDOMRootWindow(window.parent);
+            }
+            else {
+                return window;
+            }
+        }
+    }
+
+    //window.frames.length != parent.frames.length
+    getDOMRootWindow()["test"]="这是测试";
+    alert(getDOMRootWindow()["test"]);
+
+
+</script>
+
+</html>

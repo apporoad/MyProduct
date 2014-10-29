@@ -1,0 +1,86 @@
+﻿<html>
+<head>
+</head>
+
+<body>
+
+
+
+</body>
+
+<script type="text/javascript" >
+
+//匿名函数的调用
+(function(obj1,obj2){
+//demo1
+//alert(obj1);
+//alert(obj2);
+
+//测试全局变量
+/*
+function test1()
+{
+	obj=1;
+}
+test1();
+alert(obj);
+*/
+
+//测试局部变量  --报错
+/*
+function test1()
+{
+	var obj=1;
+}
+test1();
+alert(obj);
+*/
+
+//测试 匿名对象
+/*
+var obj={ name:"lll",age : 11};
+
+alert(obj.name);
+alert(obj.age);
+*/
+
+
+//测试对象
+/*
+var obj=function(){
+	alert("类对象");
+};
+obj.prototype.fun1=function(){
+	alert("test1");
+};
+obj.prototype={ 
+fun1:function(){alert("test1覆盖");}
+,fun2:function(){alert("test2");}};
+
+alert(1);
+//实例化，并调用方法
+var instance=new obj();
+//调用方法
+instance.fun1();
+instance.fun2();
+//可以直接调用
+obj();
+*/
+
+//闭包
+var GetWidthAndHeight;
+(function(){
+	var Width=1024;
+	var Height=768;
+	GetWidthAndHeight=function(){
+		return Width+"*"+Height;
+	};
+})();
+alert(GetWidthAndHeight());
+
+
+})("参数1","参数2");
+
+</script>
+
+</html>

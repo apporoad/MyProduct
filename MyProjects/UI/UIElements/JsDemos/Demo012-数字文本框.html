@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<input id="a11" type="text" onkeyup="this.value=this.value.replace(/[^0-9-]/g,'')" ></input>
+
+
+<br>
+<input type="text" onkeyup="this.value=this.value.replace(/^\d+(\d|(\.[1-9]{1,2}))$/g,'')" ></input>
+
+
+
+<input onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')">
+<input name=txt1 onchange="if(/\D/.test(this.value)){alert('只能输入数字');this.value='';}">
+
+
+<hr>
+<input type=text t_value="" o_value=""
+       onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value"
+       onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value"
+       onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+
+</body>
+</html>
+
+        <script type="text/javascript">
+        var obj=window.document.getElementById("a11");
+            obj.ad=12;
+
+            obj=document.getElementById("a11");
+            alert(obj.ad);
+
+        </script>
