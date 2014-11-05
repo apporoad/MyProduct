@@ -1,0 +1,17 @@
+#my app.rb
+require 'sinatra'
+
+get '/' do
+	'hello world'
+end
+
+get '/test' do
+	p=params['id']
+	if p==1
+		'答案1'
+	elsif p==2
+		'答案2'
+	else
+		'大安3'
+	end
+end
