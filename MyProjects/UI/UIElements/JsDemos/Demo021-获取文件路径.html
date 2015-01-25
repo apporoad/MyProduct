@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+    getRootPath = function (strFullPath,strPath) {
+        //var strFullPath = window.document.location.href;
+        //var strPath = window.document.location.pathname;
+        var pos = strFullPath.indexOf(strPath);
+        var prePath = strFullPath.substring(0, pos);
+        return prePath;
+    }
+
+    getCurrentPagePath = function (strFullPath,strPath) {
+
+        //var strFullPath = window.document.location.href;
+        //var strPath = window.document.location.pathname;
+        var pos = strFullPath.indexOf(strPath);
+        var prePath = strFullPath.substring(0, pos);
+        var postPath = strPath.substring(0, strPath.substr(1).lastIndexOf('/') + 1);
+        return (prePath + postPath);
+    }
+    var path="http://uat.fis.hwwt2.com/CMD2_CRP/help/test3.aspx";
+    var pathName="/CMD2_CRP/help/test3.aspx";
+    alert(getRootPath(path,pathName));
+    alert(getCurrentPagePath(path,pathName));
+
+</script>
+</html>
