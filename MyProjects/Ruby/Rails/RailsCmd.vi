@@ -1,0 +1,13 @@
+railsCmd:
+rails new project
+rails server
+rails generate scaffold [module] [property]:[type] ..
+
+
+db:
+rake db:migrate
+rake db:seed
+rake db:rollback
+
+test:
+rake test
