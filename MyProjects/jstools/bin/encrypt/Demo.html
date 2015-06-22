@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>
+        <script type="text/javascript" src="../../libs/encrypt/base64.js"></script>
+        <script type="text/javascript" src="../../libs/encrypt/md5.js"></script>
+        <script type="text/javascript" src="../../libs/encrypt/sha1.js"></script>
+       <script type="text/javascript">
+           // base64
+           var b = new Base64();
+           var str = b.encode("hello base64");
+           alert("base64 encode:" + str);
+           str = b.decode(str);
+           alert("base64 decode:" + str);
+
+            //md5
+           var hash = hex_md5("hello md5");
+           alert("md5 encode:"+hash);
+
+            //sha1
+           var sha = hex_sha1('hello sha1')
+           alert("sha1 encode:"+sha)
+
+       </script>

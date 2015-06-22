@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="../../css/common.css" type="text/css"/>
+    <script type="text/javascript" src="../../libs/templateEngine/mustache2.1.2.js"></script>
+    <script type="text/javascript" src="js/SqlScriptGenerator.js"></script>
+    <script type="text/javascript" src="../../libs/jquery/jquery-1.8.2.js"></script>
+</head>
+<body>
+<h2>select template</h2>
+<table class="gridtable">
+    <tr>
+        <td>serverTemplate</td>
+        <td>
+            <select id="serverTemplateCode">
+                <option value="0">请选择..</option>
+                <option value="1" selected>Default</option>
+            </select></td>
+    </tr>
+    <tr>
+        <td>localTemplate</td>
+        <td><input type="file" id="fileLocalTemplate"></td>
+    </tr>
+</table>
+<hr>
+<h2>parameters</h2>
+<table class="gridtable">
+    <tr>
+        <td>fileName</td>
+        <td><input type="text" id="paraFileName"></td>
+        <td>desciption</td>
+        <td><input type="text" id="paraDesc"></td>
+    </tr>
+    <tr>
+        <td>creator</td>
+        <td><input type="text" id="paraCreator"></td>
+        <td>createDate</td>
+        <td><input type="text" id="paraCreateDate"></td>
+    </tr>
+</table>
+<hr>
+<h2>脚本内容</h2>
+<table class="gridtable">
+    <tr>
+        <td>content</td>
+        <td><textarea id="txtSqlContent"></textarea></td>
+    </tr>
+    <tr>
+        <td>sqlFiles</td>
+        <td><input type="file" id="fileSqlFiles"></td>
+    </tr>
+</table>
+<h2>操作</h2>
+<button id="action" onclick="onclick_generateScript()">生成脚本文件</button>
+<h2>结果</h2>
+<table class="gridtable">
+    <tr>
+        <td>fileName</td>
+        <td><input type="text" id="txtResultFileName"></td>
+    </tr>
+    <tr>
+        <td>content</td>
+        <td><textarea id="txtResultSql"></textarea></td>
+    </tr>
+</table>
+
+</body>
+</html>
+
+<script type="text/javascript" src="../../js/io.js"></script>
+<script type="text/javascript" src="../../js/time.js"></script>
+<script type="text/javascript">
+    //点击事件
+    function onclick_generateScript() {
+        //getTemplate
+        var template;
+        //judge local
+        var localTemplateFile = $("#fileLocalTemplate")[0].files;
+        if (localTemplateFile.length) {
+            var file = localTemplateFile[0];
+            template = JP.IO.ReadFileContent(file,generateScript);
+        }
+        else {
+            // get server template
+            switch ($("#serverTemplateCode").val()) {
+                case  "1":
+                    template = JP.IO.GetServiceFileContent("../../template/SqlScriptTemplate.sql",generateScript);
+                    break;
+                default :
+                    alert("please select one Template");
+                    break;
+            }
+        }
+    }
+
+    function generateScript(template){
+        //初始化参数
+        var paraFileName = $("#paraFileName").val();
+        var paraDesc = $("#paraDesc").val();
+        var paraCreator = $("#paraCreator").val();
+        var paraCreateDate = $("#paraCreateDate").val();
+        if (paraFileName != "")
+            templateParameter.fileName = paraFileName;
+        if (paraDesc != "")
+            templateParameter.description = paraDesc;
+        if (paraCreator != "")
+            templateParameter.creator = paraCreator;
+        if (paraCreateDate != "")
+            templateParameter.createDate = paraCreateDate;
+        else
+            templateParameter.createDate = JP.Time.CurrentTime();
+
+        //获取sql content
+        var fileArray = new Array();
+        var textArea = $("#txtSqlContent").val();
+        if (textArea && textArea.trim(" ") != "") {
+            fileArray[0] = textArea;
+        }
+        else {
+            var sqlFiles = $("#fileSqlFiles")[0].files;
+            if (sqlFiles.length) {
+                for (var i = 0; i < sqlFiles.length; i++) {
+                    fileArray.push(JP.IO.ReadFileContent(sqlFiles[i]));
+                }
+            }
+            else {
+                alert("请提供sql内容，或者sql文件");
+            }
+        }
+
+        //批量解析生成文件
+        if (fileArray.length) {
+            //var newJson = jQuery.extend(true,{}, templateParameter);
+            templateParameter.sqlcontent = fileArray[0];
+            //解析得到
+            var result = AnalysisTempate(template, templateParameter);
+            $("#txtResultFileName").val(JP.Time.GetCurrentTimeStamp() + templateParameter.fileName);
+            $("#txtResultSql").val(result);
+        }
+    }
+
+
+</script>

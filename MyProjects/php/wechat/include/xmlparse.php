@@ -17,12 +17,20 @@ class XMLParse
 	public function extract($xmltext)
 	{
 		try {
-			$xml = new DOMDocument();
-			$xml->loadXML($xmltext);
-			$array_e = $xml->getElementsByTagName('Encrypt');
-			$array_a = $xml->getElementsByTagName('ToUserName');
-			$encrypt = $array_e->item(0)->nodeValue;
-			$tousername = $array_a->item(0)->nodeValue;
+			
+//			$xml = new DOMDocument();
+//			
+//			$xml->loadXML($xmltext);
+//			
+//			$array_e = $xml->getElementsByTagName('Encrypt');
+//			
+//			$array_a = $xml->getElementsByTagName('ToUserName');
+//			
+//			$encrypt = $array_e->item(0)->nodeValue;
+//			$tousername = $array_a->item(0)->nodeValue;
+			$xmlObj=simplexml_load_string($xmltext);
+			$encrypt= $xmlObj->Encrypt;
+			$tousername= $xmlObj->ToUserName;
 			return array(0, $encrypt, $tousername);
 		} catch (Exception $e) {
 			print $e . "\n";
@@ -47,6 +55,14 @@ class XMLParse
 </xml>";
 		return sprintf($format, $encrypt, $signature, $timestamp, $nonce);
 	}
+	
+	public function logit($txt){
+			$myfile = fopen("newfile.txt", "a+") or die("Unable to open file!");
+			ini_set('date.timezone','Asia/Shanghai');
+			$txt=date('Y-m-d H:i:s',time())."\t".$txt."\r\n";
+			fwrite($myfile, $txt);
+			fclose($myfile);
+		}
 
 }
 

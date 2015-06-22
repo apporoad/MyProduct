@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="../../libs/jquery/jquery-1.8.2.js"></script>
+</head>
+<body>
+    <table class="gridtable" >
+        <tr><th>method</th><th>content</th><th>action</th><th>result</th></tr>
+        <tr><td>myEncrypt</td><td><input type="text" id="txtMyEncrypt"></td><td><button  onclick="f_myEncrypt()"></button></td><td ><input type="text" id="lblMyEncrypt" maxlength="100"></input></td></tr>
+
+    </table>
+
+
+</body>
+</html>
+        <script type="text/javascript" src="../../libs/encrypt/md5.js"></script>
+        <script type="text/javascript" src="../../libs/encrypt/sha1.js"></script>
+        <script type="text/javascript">
+            //my encrypt
+            function f_myEncrypt() {
+                var val = $("#txtMyEncrypt").val();
+                if (val != "") {
+                val = hex_md5(hex_sha1("lxyEncrypt["+val+"]"));
+                $("#lblMyEncrypt").val(val);
+                }
+            }
+
+        </script>
+        <style type="text/css">
+            button {
+                height: 20px;
+                width: 20px;
+            }
+            #lblMyEncrypt{
+
+                width: 300px;
+            }
+            table.gridtable {
+                font-family: verdana,arial,sans-serif;
+                font-size:11px;
+                color:#333333;
+                border-width: 1px;
+                border-color: #666666;
+                border-collapse: collapse;
+            }
+            table.gridtable th {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #dedede;
+            }
+            table.gridtable td {
+                border-width: 1px;
+                padding: 8px;
+                border-style: solid;
+                border-color: #666666;
+                background-color: #ffffff;
+            }
+
+        </style>

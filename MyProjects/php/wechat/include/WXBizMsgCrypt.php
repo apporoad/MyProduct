@@ -93,6 +93,7 @@ class WXBizMsgCrypt
 	 */
 	public function EncryptMsg($sReplyMsg, $sTimeStamp, $sNonce, &$sEncryptMsg)
 	{
+
 		$pc = new Prpcrypt($this->m_sEncodingAesKey);
 
 		//加密
@@ -144,35 +145,28 @@ class WXBizMsgCrypt
 		if (strlen($this->m_sEncodingAesKey) != 43) {
 			return ErrorCode::$IllegalAesKey;
 		}
-
 		$pc = new Prpcrypt($this->m_sEncodingAesKey);
-
 		//提取密文
 		$xmlparse = new XMLParse;
 		$array = $xmlparse->extract($sPostData);
 		$ret = $array[0];
-
 		if ($ret != 0) {
 			return $ret;
 		}
-
 		if ($sTimeStamp == null) {
 			$sTimeStamp = time();
 		}
-
 		$encrypt = $array[1];
 		$touser_name = $array[2];
-
 		//验证安全签名
 		$sha1 = new SHA1;
 		$array = $sha1->getSHA1($this->m_sToken, $sTimeStamp, $sNonce, $encrypt);
 		$ret = $array[0];
-
 		if ($ret != 0) {
 			return $ret;
 		}
-
 		$signature = $array[1];
+		//logit($signature);
 		if ($signature != $sMsgSignature) {
 			return ErrorCode::$ValidateSignatureError;
 		}
@@ -182,7 +176,6 @@ class WXBizMsgCrypt
 			return $result[0];
 		}
 		$sMsg = $result[1];
-
 		return ErrorCode::$OK;
 	}
 
