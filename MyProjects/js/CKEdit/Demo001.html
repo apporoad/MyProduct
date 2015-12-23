@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<h1>ckeditor</h1>
+<textarea rows="30" cols="50" name="editor01">请输入15x13.</textarea>
+
+<button onclick="testButton()">test</button>
+
+<button onclick="testCursor()">光标</button>
+
+
+</body>
+</html>
+
+
+<script type="text/javascript" src="lib/ckeditor.js"></script>
+
+<script type="text/javascript" src="lib/jquery-1.8.2.js"></script>
+
+
+<script type="text/javascript">
+    window.onload = function () {
+        CKEDITOR.replace('editor01');
+    };
+
+
+    function test() {
+        // $(window.frames[0].document.getElementsByClassName("CSS1Compat")).find("p").attr("contenteditable", true);
+        $(window.frames[0].document).find("body").bind("paste", handlepaste);
+
+    }
+
+    function testCursor() {
+        var ps = $(window.frames[0].document).find("body").find("p");
+        if (ps[0]) {
+            getTxt1CursorPosition(ps[0]);
+        }
+    }
+
+    function testButton() {
+        var a1 = "";
+        var z2 = "";
+        var obj = $(window.frames[0].document.getElementsByClassName("CSS1Compat")).find("p");
+    }
+    var alertMsg = function () {
+        alert("aa");
+    };
+
+    function getTxt1CursorPosition(elem) {
+        var oTxt1 = elem;
+        var cursurPosition = -1;
+        if (oTxt1.selectionStart) {//非IE浏览器
+            cursurPosition = oTxt1.selectionStart;
+        } else {//IE
+            var range = document.selection.createRange();
+            range.moveStart("character", -oTxt1.value.length);
+            cursurPosition = range.text.length;
+        }
+        alert(cursurPosition);
+    }
+
+    var handlepaste = function () {
+        if (myBrowser() == "IE") {
+            var elem = this;
+            var e = event || arguments[0];
+            if (e.view) {
+                e = e.view;
+            }
+            var savedcontent = elem.innerHTML;
+            if (e && e.clipboardData && e.clipboardData.getData) {// Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
+
+                if (e.clipboardData.files.length>0) {
+                    if(e.clipboardData.files[0].type.indexOf("image")>-1) {
+                        //var img=document.getElementById("tp");
+                        var data = e.clipboardData.files[0];
+                        //img.src="data:image/png;base64,"+base64_encode(data);
+                        var ele = document.createElement("img");
+                        ele.src = window.URL.createObjectURL(data);
+                        //elem.innerHTML=savedcontent + ele.outerHTML;
+                        inimage(ele.outerHTML);
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {// Everything else - empty editdiv and allow browser to paste content into it, then cleanup
+                return true;
+            }
+        }
+        else if (myBrowser() == "Chrome") {
+            var elem = this;
+            var e = event || arguments[0];
+            if (e.originalEvent) {
+                e = e.originalEvent;
+            }
+            var savedcontent = elem.innerHTML;
+            if (e && e.clipboardData && e.clipboardData.getData) {// Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
+                if (/Files/.test(e.clipboardData.types)) {
+                    //var img=document.getElementById("tp");
+                    var data = e.clipboardData.items[0].getAsFile();
+
+
+
+                    if(data.type && data.type.indexOf("image")>-1) {
+                        //img.src="data:image/png;base64,"+base64_encode(data);
+
+                        readBlobAsDataURL(data, function (dataurl){
+                            var ele = document.createElement("img");
+                            ele.src =dataurl;
+                            //elem.innerHTML=savedcontent + ele.outerHTML;
+                            inimage(ele.outerHTML);
+                        });
+                        return false;
+                    }
+                }
+                return true;
+            }
+            else {// Everything else - empty editdiv and allow browser to paste content into it, then cleanup
+                return true;
+            }
+        }
+    };
+
+    setTimeout(test, "300");
+
+
+    function inimage(text) {
+        var obj = $(window.frames[0].document)[0];
+        var range, node;
+        if (obj.hasfocus!=undefined && !obj.hasfocus) {
+            obj.focus();
+        }
+        var innerWindow=window.frames[0];
+        if (innerWindow.getSelection && innerWindow.getSelection().getRangeAt) {
+            range =innerWindow.getSelection().getRangeAt(0);// window.getSelection().getRangeAt(0);
+            range.collapse(false);
+            node = range.createContextualFragment(text);
+            var c = node.lastChild;
+            range.insertNode(node);
+            if (c) {
+                range.setEndAfter(c);
+                range.setStartAfter(c)
+            }
+            var j = innerWindow.getSelection();
+            j.removeAllRanges();
+            j.addRange(range);
+
+        } else if (innerWindow.selection && innerWindow.document.selection.createRange) {
+            innerWindow.document.selection.createRange().pasteHTML(text);
+        }
+    }
+
+    function myBrowser() {
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1;
+        if (isOpera) {
+            return "Opera"
+        }
+        ; //判断是否Opera浏览器
+        if (userAgent.indexOf("Firefox") > -1) {
+            return "FF";
+        } //判断是否Firefox浏览器
+        if (userAgent.indexOf("Chrome") > -1) {
+            return "Chrome";
+        }
+        if (userAgent.indexOf("Safari") > -1) {
+            return "Safari";
+        } //判断是否Safari浏览器
+        if (userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera) {
+            return "IE";
+        }
+        ; //判断是否IE浏览器
+        return "IE";
+    }
+
+
+    function readBlobAsDataURL(blob, callback) {
+        var a = new FileReader();
+        a.onload = function(e) {callback(e.target.result);};
+        a.readAsDataURL(blob);
+    }
+    //example:
+
+</script>
+
+

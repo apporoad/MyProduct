@@ -1,0 +1,109 @@
+
+<h1>���а�����</h1>
+
+<input type="button" name="clipboard" value="����" onclick="test()" />
+
+
+<h1>���а�2</h1>
+<div id='div' contenteditable='true' onpaste='handlepaste(this, event)'>Paste</div>
+
+<img id="tp" />
+
+<script type="text/javascript">
+//window.clipboardData.getData("text")
+
+var test=function(){
+	var val=window.clipboardData.getData("text");
+	//alert(val);
+};
+
+function handlepaste (elem, e) {
+    var savedcontent = elem.innerHTML;
+    if (e && e.clipboardData && e.clipboardData.getData) {// Webkit - get data from clipboard, put into editdiv, cleanup, then cancel event
+        if (/text\/html/.test(e.clipboardData.types)) {
+            elem.innerHTML = e.clipboardData.getData('text/html');
+        }
+        else if (/text\/plain/.test(e.clipboardData.types)) {
+            elem.innerHTML = e.clipboardData.getData('text/plain');
+        }
+	else if(/Files/.test(e.clipboardData.types)){
+	    var img=document.getElementById("tp");
+	    var data=e.clipboardData.items[0].getAsFile();
+	    //img.src="data:image/png;base64,"+base64_encode(data);
+	    img.src = window.URL.createObjectURL(data);
+	}
+        else {
+            elem.innerHTML = "";
+        }
+        waitforpastedata(elem, savedcontent);
+        if (e.preventDefault) {
+                e.stopPropagation();
+                e.preventDefault();
+        }
+        return false;
+    }
+    else {// Everything else - empty editdiv and allow browser to paste content into it, then cleanup
+        elem.innerHTML = "";
+        waitforpastedata(elem, savedcontent);
+        return true;
+    }
+}
+
+function waitforpastedata (elem, savedcontent) {
+    if (elem.childNodes && elem.childNodes.length > 0) {
+        processpaste(elem, savedcontent);
+    }
+    else {
+        that = {
+            e: elem,
+            s: savedcontent
+        }
+        that.callself = function () {
+            waitforpastedata(that.e, that.s)
+        }
+        setTimeout(that.callself,20);
+    }
+}
+
+function processpaste (elem, savedcontent) {
+    pasteddata = elem.innerHTML;
+    //^^Alternatively loop through dom (elem.childNodes or elem.getElementsByTagName) here
+
+    elem.innerHTML = savedcontent;
+
+    // Do whatever with gathered data;
+    alert(pasteddata);
+}
+
+
+function base64_encode(str){
+                var c1, c2, c3;
+                var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";                
+                var i = 0, len= str.length, string = '';
+
+                while (i < len){
+                        c1 = str.charCodeAt(i++) & 0xff;
+                        if (i == len){
+                                string += base64EncodeChars.charAt(c1 >> 2);
+                                string += base64EncodeChars.charAt((c1 & 0x3) << 4);
+                                string += "==";
+                                break;
+                        }
+                        c2 = str.charCodeAt(i++);
+                        if (i == len){
+                                string += base64EncodeChars.charAt(c1 >> 2);
+                                string += base64EncodeChars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+                                string += base64EncodeChars.charAt((c2 & 0xF) << 2);
+                                string += "=";
+                                break;
+                        }
+                        c3 = str.charCodeAt(i++);
+                        string += base64EncodeChars.charAt(c1 >> 2);
+                        string += base64EncodeChars.charAt(((c1 & 0x3) << 4) | ((c2 & 0xF0) >> 4));
+                        string += base64EncodeChars.charAt(((c2 & 0xF) << 2) | ((c3 & 0xC0) >> 6));
+                        string += base64EncodeChars.charAt(c3 & 0x3F)
+                }
+                        return string
+        }
+
+</script>
