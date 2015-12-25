@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body contenteditable="true" id="bd">
+
+</body>
+</html>
+
+        <script type="text/javascript" src="lib/jquery-1.8.2.js"></script>
+
+        <script type="text/javascript">
+            $.fn.pasteEvents = function( delay ) {
+                if (delay == undefined) delay = 20;
+                return $(this).each(function() {
+                    var $el = $(this);
+                    $el.on("paste", function() {
+                        $el.trigger("prepaste");
+                        setTimeout(function() { $el.trigger("postpaste"); }, delay);
+                    });
+                });
+            };
+
+            $("#bd").on("postpaste", function() {
+                alert("天啊");
+            }).pasteEvents();
+
+        </script>

@@ -28,12 +28,6 @@
     };
 
 
-    function test() {
-        // $(window.frames[0].document.getElementsByClassName("CSS1Compat")).find("p").attr("contenteditable", true);
-        $(window.frames[0].document).find("body").bind("paste", handlepaste);
-
-    }
-
     function testCursor() {
         var ps = $(window.frames[0].document).find("body").find("p");
         if (ps[0]) {
@@ -63,6 +57,19 @@
         alert(cursurPosition);
     }
 
+
+    ///////////////////////////////////////////////////////
+
+
+
+    function lazyLoader() {
+        // $(window.frames[0].document.getElementsByClassName("CSS1Compat")).find("p").attr("contenteditable", true);
+        $(window.frames[0].document).find("body").bind("paste", handlepaste);
+
+    }
+    setTimeout(lazyLoader, "300");
+
+
     var handlepaste = function () {
         if (myBrowser() == "IE") {
             var elem = this;
@@ -78,10 +85,16 @@
                         //var img=document.getElementById("tp");
                         var data = e.clipboardData.files[0];
                         //img.src="data:image/png;base64,"+base64_encode(data);
-                        var ele = document.createElement("img");
-                        ele.src = window.URL.createObjectURL(data);
+                        //var ele = document.createElement("img");
+                       // ele.src = window.URL.createObjectURL(data);
                         //elem.innerHTML=savedcontent + ele.outerHTML;
-                        inimage(ele.outerHTML);
+                        //inimage(ele.outerHTML);
+                        readBlobAsDataURL(data, function (dataurl){
+                            var ele = document.createElement("img");
+                            ele.src =dataurl;
+                            //elem.innerHTML=savedcontent + ele.outerHTML;
+                            inimage(ele.outerHTML);
+                        });
                         return false;
                     }
                 }
@@ -103,11 +116,8 @@
                     //var img=document.getElementById("tp");
                     var data = e.clipboardData.items[0].getAsFile();
 
-
-
                     if(data.type && data.type.indexOf("image")>-1) {
                         //img.src="data:image/png;base64,"+base64_encode(data);
-
                         readBlobAsDataURL(data, function (dataurl){
                             var ele = document.createElement("img");
                             ele.src =dataurl;
@@ -123,18 +133,16 @@
                 return true;
             }
         }
+        return true;
     };
 
-    setTimeout(test, "300");
-
-
     function inimage(text) {
-        var obj = $(window.frames[0].document)[0];
+        var innerWindow=window.frames[0];
+        var obj = $(innerWindow.document)[0];
         var range, node;
         if (obj.hasfocus!=undefined && !obj.hasfocus) {
             obj.focus();
         }
-        var innerWindow=window.frames[0];
         if (innerWindow.getSelection && innerWindow.getSelection().getRangeAt) {
             range =innerWindow.getSelection().getRangeAt(0);// window.getSelection().getRangeAt(0);
             range.collapse(false);
@@ -176,7 +184,6 @@
         ; //判断是否IE浏览器
         return "IE";
     }
-
 
     function readBlobAsDataURL(blob, callback) {
         var a = new FileReader();

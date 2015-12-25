@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+</body>
+</html>
+        <script type="text/javascript" src="lib/ntlm.js"></script>
+
+
+        <script type="text/javascript">
+
+
+            Ntlm.setCredentials('dcjet', 'xyliu', 'password01!');
+          var tUrl= "http://sp-dev02/CSC/Survey/Lists/JGTSatisfySurvey/data.json";
+           //"http://sp-dev02/CSC/Survey/Lists/JGTSatisfySurvey/NewForm.aspx?IsDlg=1&TradeCode=3201919024";
+//            try {
+                if (Ntlm.authenticate(tUrl)) {
+                    window.location.href = tUrl;
+                }
+//            }
+//            catch (ex)
+//            {
+//                alert(ex);
+//            }
+
+        </script>

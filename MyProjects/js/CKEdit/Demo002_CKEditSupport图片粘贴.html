@@ -11,23 +11,80 @@
 </body>
 </html>
 
-
 <script type="text/javascript" src="lib/ckeditor.js"></script>
 
 <script type="text/javascript" src="lib/jquery-1.8.2.js"></script>
-
 
 <script type="text/javascript">
     window.onload = function () {
         CKEDITOR.replace('editor01');
     };
 
+
+    ///////////////////////////////////////////////////////
+//    $.fn.pasteEvents = function( delay ) {
+//        if (delay == undefined) delay = 20;
+//        return $(this).each(function() {
+//            var $el = $(this);
+//            $el.on("paste", function() {
+//                $el.trigger("prepaste");
+//                setTimeout(function() { $el.trigger("postpaste"); }, delay);
+//            });
+//        });
+//    };
+
+    var EventUtil = {
+        addHandler: function (element, type, handler) {
+            if(!element)
+                return false;
+            if (element.addEventListener) {
+                element.addEventListener(type, handler, false);
+            } else if (element.attachEvent) {
+                element.attachEvent("on" + type, handler);
+            } else {
+                element["on" + type] = handler;
+            }
+        },
+        getEvent: function (event) {
+            return event ? event : window.event;
+        },
+        getClipboardText: function (event) {
+            var clipboardData = (event.clipboardData || window.clipboardData);
+            return clipboardData.getData("text");
+        },
+        setClipboardText: function (event, value) {
+            if (event.clipboardData) {
+                return event.clipboardData.setData("text/plain", value);
+            } else if (window.clipboardData) {
+                return window.clipboardData.setData("text", value);
+            }
+        },
+        preventDefault: function (event) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
+        }
+    };
+
     function lazyLoader() {
         // $(window.frames[0].document.getElementsByClassName("CSS1Compat")).find("p").attr("contenteditable", true);
         //$(window.frames[0].document).find("body").bind("paste", handlepaste);
-
+       //$(window.frames[0].document).find("body").on("postpaste", handlepaste).pasteEvents();
+        var innerBody=$(window.frames[0].document).find("body")[0];
+        //beforepaste
+        if(myBrowser()=="IE")
+        {
+             EventUtil.addHandler(innerBody,"beforepaste",handlepaste);
+        }
+        else
+        {
+            EventUtil.addHandler(innerBody,"paste",handlepaste);
+        }
     }
     setTimeout(lazyLoader, "300");
+
 
     var handlepaste = function () {
         if (myBrowser() == "IE") {
@@ -44,10 +101,16 @@
                         //var img=document.getElementById("tp");
                         var data = e.clipboardData.files[0];
                         //img.src="data:image/png;base64,"+base64_encode(data);
-                        var ele = document.createElement("img");
-                        ele.src = window.URL.createObjectURL(data);
+                        //var ele = document.createElement("img");
+                        // ele.src = window.URL.createObjectURL(data);
                         //elem.innerHTML=savedcontent + ele.outerHTML;
-                        inimage(ele.outerHTML);
+                        //inimage(ele.outerHTML);
+                        readBlobAsDataURL(data, function (dataurl){
+                            var ele = document.createElement("img");
+                            ele.src =dataurl;
+                            //elem.innerHTML=savedcontent + ele.outerHTML;
+                            inimage(ele.outerHTML);
+                        });
                         return false;
                     }
                 }
@@ -68,12 +131,15 @@
                 if (/Files/.test(e.clipboardData.types)) {
                     //var img=document.getElementById("tp");
                     var data = e.clipboardData.items[0].getAsFile();
+
                     if(data.type && data.type.indexOf("image")>-1) {
                         //img.src="data:image/png;base64,"+base64_encode(data);
-                        var ele = document.createElement("img");
-                        ele.src = window.URL.createObjectURL(data);
-                        //elem.innerHTML=savedcontent + ele.outerHTML;
-                        inimage(ele.outerHTML);
+                        readBlobAsDataURL(data, function (dataurl){
+                            var ele = document.createElement("img");
+                            ele.src =dataurl;
+                            //elem.innerHTML=savedcontent + ele.outerHTML;
+                            inimage(ele.outerHTML);
+                        });
                         return false;
                     }
                 }
@@ -83,15 +149,16 @@
                 return true;
             }
         }
+        return true;
     };
 
     function inimage(text) {
-        var obj = $(window.frames[0].document)[0];
+        var innerWindow=window.frames[0];
+        var obj = $(innerWindow.document)[0];
         var range, node;
         if (obj.hasfocus!=undefined && !obj.hasfocus) {
             obj.focus();
         }
-        var innerWindow=window.frames[0];
         if (innerWindow.getSelection && innerWindow.getSelection().getRangeAt) {
             range =innerWindow.getSelection().getRangeAt(0);// window.getSelection().getRangeAt(0);
             range.collapse(false);
@@ -133,6 +200,15 @@
         ; //判断是否IE浏览器
         return "IE";
     }
+
+    function readBlobAsDataURL(blob, callback) {
+        var a = new FileReader();
+        a.onload = function(e) {callback(e.target.result);};
+        a.readAsDataURL(blob);
+    }
+    //example:
+
 </script>
 
 
+    
