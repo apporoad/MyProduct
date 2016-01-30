@@ -1,0 +1,13 @@
+.effect-ruby {
+    opacity: 0.7;
+    -webkit-transition: opacity 0.75s, -webkit-transform 0.45s;
+    transition: opacity 0.75s, transform 0.45s;
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);
+}
+
+.effect-ruby:hover {
+    opacity: 0.8;
+    -webkit-transform: scale(1.25);
+    transform: scale(1.25);
+}
