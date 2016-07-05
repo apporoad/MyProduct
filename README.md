@@ -1,3 +1,3 @@
 # MyProduct
 
-all files is demos
+all files are demos
