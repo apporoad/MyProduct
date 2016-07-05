@@ -1,0 +1,18 @@
+{
+  "name": "demo002_commander",
+  "version": "1.0.0",
+  "description": "test",
+  "main": "index.js",
+  "dependencies": {
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "bin":{
+	"mytool":"app.js"	
+}
+}
